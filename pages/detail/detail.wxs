@@ -1,0 +1,8 @@
+var timeChange = function(time) {
+  var newTime = getDate(time)
+  return newTime.toLocaleString()
+}
+
+module.exports = {
+  timeChange: timeChange
+};

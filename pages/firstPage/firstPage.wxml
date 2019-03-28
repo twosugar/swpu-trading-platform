@@ -1,0 +1,5 @@
+<!--pages/firstPage/firstPage.wxml-->
+<view>
+本程序需要授权登录，是否授权？
+</view>
+<button open-type="getUserInfo" bindtap='getJurisdiction'>授权登录</button>

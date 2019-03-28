@@ -1,0 +1,45 @@
+<!--pages/home/home.wxml-->
+<wxs module="filter" src="./home.wxs"></wxs>
+<view class='home-page'>
+<swiper
+  indicator-dots="true"
+  autoplay="true"
+  class="home-swiper"
+>
+  <block wx:for="{{imgUrls}}" wx:key="id">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image"/>
+    </swiper-item>
+  </block>
+</swiper>
+<i-tabs current="{{ tabCurrent }}" bindchange="tabHandleChange" class="home-tab">
+    <i-tab key="new" title="最新信息"></i-tab>
+    <i-tab key="free" title="免费专区"></i-tab>
+</i-tabs>
+<view class='container'>
+<!-- <open-data type="userAvatarUrl"></open-data> -->
+  <view wx:for="{{proList}}" wx:key="id" class="home-card" data-item='{{item}}' bindtap='gotoDetail'>
+    <view class='card-head'>
+      <view class='card-user-imgbox'>
+      <image src='{{item.user_img}}' class='card-user-img'></image>
+      </view>
+      <view class='card-mesg'>
+        <view class='card-mesg__username'>{{item.username}}</view>
+        <view class='card-mesg__title'>{{item.title}}</view>
+      </view>
+    </view>
+    <view class='card-content'>
+      <view 
+       class='card-content-imgbox'
+      >
+        <view wx:for="{{item.imgList}}" wx:key="id" wx:for-item="data" wx:for-index="id" class='card-content-imgview'>
+          <image src='{{data}}' class='card-content-imgview__img' lazy-load="true" mode="aspectFill" binderror="handleEvent" data-index="{{id}}" data-father_index="{{index}}"></image>
+        </view>
+      </view>
+      <view class='card-content__word'>{{item.content}}</view>
+      <view>#{{item.type}}</view>
+      <view>{{filter.timeChange(item.send_time)}}</view>
+    </view>
+  </view>
+</view>
+</view>

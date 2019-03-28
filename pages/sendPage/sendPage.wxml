@@ -1,0 +1,51 @@
+<!--pages/sendPage/sendPage.wxml-->
+<i-panel title="基础用法">
+    <i-input value="{{ formData['title'] }}" title="标题" maxlength="50" placeholder="品类品牌型号" data-key='title' bind:change="inputChange"/>
+    <view class="section">
+      <picker bindchange="bindPickerChange" value="{{formData['type']}}" range="{{typeArray}}">
+        <view class="picker">
+          <text class='picker-title'>分类</text>
+          <text style="color:#495060">{{typeArray[typeIndex] ? typeArray[typeIndex] : "请选择分类"}}</text>
+          <i-icon style='float: right' type="enter" size="14" color="#495060" />
+        </view>
+      </picker>
+    </view>
+    <view class='input-and-switch'>
+     <i-input value="{{ formData['mobile'] }}" data-key='mobile' type="number" title="联系电话" placeholder="请输入手机号，隐藏则不展示" maxlength='11' bind:change="inputChange"/>
+     <i-cell title="基本用法" class="inputswitch">
+        <i-switch value="{{switchData.switchMobile}}" size="large" bind:change="switchChange" slot="footer" data-key='switchMobile'>
+          <view slot="open">显示</view>
+          <view slot="close">隐藏</view>
+        </i-switch>
+    </i-cell>
+    </view>
+    <view class='input-and-switch'>
+    <i-input value="{{ formData['wx'] }}" title="QQ/微信" bind:change="inputChange" placeholder="QQ/微信，隐藏则不展示" maxlength='50' data-key="wx"/>
+    <i-cell title="基本用法" class="inputswitch">
+        <i-switch value="{{switchData.switchWx}}" size="large" bind:change="switchChange" slot="footer" data-key='switchWx'>
+          <view slot="open">显示</view>
+          <view slot="close">隐藏</view>
+        </i-switch>
+    </i-cell>
+    </view>
+    <i-input value="{{ formData['content'] }}" data-key="content" bind:change="inputChange" type="textarea" title="内容" placeholder="描述宝贝转手原因，入手渠道和使用感受" maxlength="200" /> 
+  
+    <view class='price-box'>
+      <text class='price-title'>出售价格</text>
+      <i-input-number value="{{ formData['price'] }}" data-key="price" min="0" max="10000000" bindchange="priceChange"  class="price-input"/>
+    </view>
+    <view class="uploader-text">
+      <text>上传图片</text>
+      <view class='uploader-content'>
+        <view class='user-showimg' wx:for="{{filePaths}}" wx:key="id">
+          <view class='close-img' bindtap='deleteImg' data-key="{{index}}">×</view>
+          <image class="user-showimg__image" src='{{item}}' mode='aspectFill'></image>
+        </view>
+        <view bindtap="doUpload" class='uploader-button' wx:if="{{filePaths.length >= 6 ? false : true}}">
+        <i-icon type="add" size='50' class='uploader-add-icon'/>
+        <text>上传照片</text>
+        </view>
+      </view>
+    </view>
+    <i-button bind:click="sendProduct" type="success" shape="circle">宝贝发布</i-button>
+</i-panel>

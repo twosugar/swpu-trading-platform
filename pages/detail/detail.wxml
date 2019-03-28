@@ -1,0 +1,34 @@
+<!--pages/detail/detail.wxml-->
+<wxs module="filter" src="./detail.wxs"></wxs>
+<view class='detail-head'>
+  <view class='user-img-box'>
+    <image src='{{proDetail.user_img}}' class='user-img'></image>
+  </view>
+  <view class='user-text'>
+    <text class='detail-user__name'>{{proDetail.username}}</text>
+    <text class='detail-user__time'>{{filter.timeChange(proDetail['send_time'])}}</text>
+  </view>
+</view>
+<view class='detail-price' wx:if="{{proDetail.price}}">￥{{proDetail.price}}</view>
+<view class='detail-title'>{{proDetail.title}}</view>
+<view class='detail-content'>{{proDetail.content}}</view>
+<view class='detail-image-container'>
+  <view wx:for="{{proDetail.imgList}}" wx:key="id" class='detail-img-box'>
+  <image src="{{item}}" class="slide-image" mode='aspectFill'/>
+  </view>
+</view>
+<view class='detail-comment-box'>
+  <text>评论</text>
+  <view class='detail-comment-box__row' wx:if="{{commentData[0].commentList}}" wx:for="{{commentData[0].commentList}}" wx:key="{{index}}">
+      <view class='detail-comment__user-img-box'>
+      <image src='{{item.img}}' class='detail-comment__user-img'></image>
+      </view>
+      <view>
+        <view class='detail-comment-box__row__head'>
+        <text>{{item.userName}}</text>
+        <text class='detail-comment__role'>{{item.identity}}</text>
+        </view>
+        <view>{{item.commentContent}}</view>
+      </view>
+  </view>
+</view>

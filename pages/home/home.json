@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "i-tabs": "../../dist/tabs/index",
+    "i-tab": "../../dist/tab/index",
+    "i-card": "../../dist/card/index"
+  },
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 10
+}
