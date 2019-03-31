@@ -1,6 +1,7 @@
 <!--pages/detail/detail.wxml-->
 <wxs module="filter" src="./detail.wxs"></wxs>
-<view class='detail-head'>
+<view class='top-detial'>
+  <view class='detail-head'>
   <view class='user-img-box'>
     <image src='{{proDetail.user_img}}' class='user-img'></image>
   </view>
@@ -17,18 +18,40 @@
   <image src="{{item}}" class="slide-image" mode='aspectFill'/>
   </view>
 </view>
+</view>
 <view class='detail-comment-box'>
-  <text>评论</text>
+  <view class='detail-comment-box__title'>留言{{commentData[0] && commentData[0].commentList && commentData[0].commentList.length ? ' · ' +  commentData[0].commentList.length : ''}}</view>
+  <view wx:if="{{!commentData[0].commentList}}" class="detail-comment-nothing">还没有人留言，快来留言吧~</view>
   <view class='detail-comment-box__row' wx:if="{{commentData[0].commentList}}" wx:for="{{commentData[0].commentList}}" wx:key="{{index}}">
-      <view class='detail-comment__user-img-box'>
-      <image src='{{item.img}}' class='detail-comment__user-img'></image>
+      <view class='detail-comment-box__row__left'>
+        <view class='detail-comment__user-img-box'>
+        <image src='{{item.img}}' class='detail-comment__user-img'></image>
+        </view>
       </view>
-      <view>
+      <view class='detail-comment__content'>
         <view class='detail-comment-box__row__head'>
         <text>{{item.userName}}</text>
         <text class='detail-comment__role'>{{item.identity}}</text>
         </view>
         <view>{{item.commentContent}}</view>
+        <view class="comment__time">{{filter.releaseTime(item.commentTime)}}</view>
+      </view>
+      <view wx:if="{{item.commentReply}}" wx:for="{{item.commentReply}}" wx:key="{{id}}" wx:for-index="id" wx:for-item="row" class='detail-comment__content__commentreply'>
+      <view class='commentreply__userimg__box'>
+        <image src='{{row.img}}' class='commentreply__userimg' mode='aspectFill'></image>
+      </view>
+      <view class='commentreply__content'>
+        <view class='commentreply__content__username'>{{item.userName}}</view>
+        <view class='commentreply__content__neirong'>{{row.content}}</view>
+      </view>
       </view>
   </view>
+  <view class='detail-comment__add' bindtap='addComment'>留言</view>
+</view>
+ <view class='comment-input-box' wx:if="{{isClickBtn}}">
+    <view class='comment-input-img-box'>
+      <image src="{{userInfo.avatarUrl}}" mode='aspectFill' class='comment-input-img-box'></image>
+    </view>
+    <input value='{{inputValue}}' type="text" placeholder="问问更多细节~" confirm-type="send" class='comment-input' focus="{{isClickBtn}}" bindinput="inputChange" bindblur="closeAddComment" cursor-spacing="9"></input>
+    <view class='comment-input-send' bindtap='sendComment'>发送</view>
 </view>

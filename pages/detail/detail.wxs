@@ -1,8 +1,28 @@
 var timeChange = function(time) {
-  var newTime = getDate(time)
+  var intTime = parseInt(time)
+  var newTime = getDate(intTime)
+  console.log('date', time , getDate(time))
   return newTime.toLocaleString()
 }
 
+var releaseTime = function(time) {
+  var intTime = parseInt(time)
+  var nowTime = getDate().getTime()
+  if (nowTime - intTime <= 60000) {
+    return parseInt((nowTime - intTime)/1000) + '秒前'
+  }
+  if (nowTime - intTime > 60000 && nowTime - intTime <= 60000 * 60) {
+    return parseInt((nowTime - intTime) / 60000) + '分钟前'
+  }
+  if (nowTime - intTime > 60000 * 60 && nowTime - intTime <= 60000 * 60 * 24) {
+    return parseInt((nowTime - intTime) / 3600000) + '小时前'
+  }
+  if (nowTime - intTime > 60000 * 60 * 24) {
+    return parseInt((nowTime - intTime) / (60000 * 60 * 24)) + '天前'
+  }
+}
+
 module.exports = {
-  timeChange: timeChange
+  timeChange: timeChange,
+  releaseTime: releaseTime
 };
