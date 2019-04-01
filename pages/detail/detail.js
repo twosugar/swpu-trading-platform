@@ -78,7 +78,6 @@ Page({
     const that = this
     const db = wx.cloud.database()
     const _ = db.command
-    const id = this.data.id
     const nowTime = new Date().getTime()
     const params = {
       commentContent: inputValue || '',
@@ -88,13 +87,16 @@ Page({
       userName: userInfo.nickName || '',
       img: userInfo.avatarUrl || ''
     }
-    console.log('params', params, id)
-    db.collection('comment').doc(id).update({
+    console.log('params', params)
+    db.collection('comment').add({
       data: {
-        0: _.push(params)
+        ...params,
+        proId: that.data.proDetail._id || 'XJEFqZT75u22qvAD',
+        commentReply: []
       },
       success(res) {
         console.log(res)
+        that.onGetCommentList(that.data.proDetail._id || 'XJEFqZT75u22qvAD')
       },
       fail(res) {
         console.log(res)
@@ -115,8 +117,7 @@ Page({
           return
         }
         this.setData({
-          commentData: res.data,
-          id: res.data[0]._id
+          commentData: res.data
         })
         wx.hideNavigationBarLoading()
         wx.stopPullDownRefresh()

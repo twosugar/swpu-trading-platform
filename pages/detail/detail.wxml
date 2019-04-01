@@ -20,9 +20,9 @@
 </view>
 </view>
 <view class='detail-comment-box'>
-  <view class='detail-comment-box__title'>留言{{commentData[0] && commentData[0].commentList && commentData[0].commentList.length ? ' · ' +  commentData[0].commentList.length : ''}}</view>
-  <view wx:if="{{!commentData[0].commentList}}" class="detail-comment-nothing">还没有人留言，快来留言吧~</view>
-  <view class='detail-comment-box__row' wx:if="{{commentData[0].commentList}}" wx:for="{{commentData[0].commentList}}" wx:key="{{index}}">
+  <view class='detail-comment-box__title'>留言{{commentData && commentData.length && commentData.length ? ' · ' +  commentData.length : ''}}</view>
+  <view wx:if="{{!commentData.length}}" class="detail-comment-nothing">还没有人留言，快来留言吧~</view>
+  <view class='detail-comment-box__row' wx:if="{{commentData && commentData.length}}" wx:for="{{commentData}}" wx:key="{{index}}">
       <view class='detail-comment-box__row__left'>
         <view class='detail-comment__user-img-box'>
         <image src='{{item.img}}' class='detail-comment__user-img'></image>
