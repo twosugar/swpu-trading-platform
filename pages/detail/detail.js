@@ -10,6 +10,8 @@ Page({
     commentData: [],
     userInfo: '',
     isClickBtn: false,//是否点击留言
+    lookAndcollection: '', //浏览和收藏
+    isCollection: false, //是否收藏
   },
 
   /**
@@ -25,6 +27,8 @@ Page({
       // proDetail: JSON.parse(options.data),
     }, () => {
       this.onGetCommentList(this.data.proDetail._id || 'XJEFqZT75u22qvAD')
+      this.getCollectionData(this.data.proDetail._id || 'XJEFqZT75u22qvAD')
+      this.getUserCollection(this.data.proDetail._id || 'XJEFqZT75u22qvAD')
     })
     
   },
@@ -96,6 +100,11 @@ Page({
       },
       success(res) {
         console.log(res)
+        wx.showToast({
+          title: '发布成功',
+          icon: 'success',
+          duration: 2000
+        })
         that.onGetCommentList(that.data.proDetail._id || 'XJEFqZT75u22qvAD')
       },
       fail(res) {
@@ -118,6 +127,80 @@ Page({
         }
         this.setData({
           commentData: res.data
+        })
+        wx.hideNavigationBarLoading()
+        wx.stopPullDownRefresh()
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+      }
+    })
+  },
+
+  copyInfo(e) {//复制
+    var that = this;
+    if(!e) {
+      return
+    }
+    wx.setClipboardData({
+      data: e.target.dataset.key || '',
+      success: function (res) {
+        wx.showToast({
+          title: '复制成功',
+        });
+      }
+    })
+  },
+
+  collectionClick() { //收藏
+
+  },
+
+  getCollectionData(id) {//获取浏览量和收藏数
+    const that = this
+    const db = wx.cloud.database()
+    db.collection('collectionTimes').where({
+      "proId": id
+    }).get({
+      success: res => {
+        console.log('浏览',res)
+        if (!res || !res.data || !res.data.length) {
+          return
+        }
+        this.setData({
+          lookAndcollection: res.data[0]
+        })
+        wx.hideNavigationBarLoading()
+        wx.stopPullDownRefresh()
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+      }
+    })
+  },
+
+  getUserCollection(id) {//获取浏览量和收藏数
+    const that = this
+    const db = wx.cloud.database()
+    db.collection('userCollection').where({
+      "proId": id
+    }).get({
+      success: res => {
+        console.log('用户收藏', res)
+        if (!res || !res.data || !res.data.length) {
+          this.setData({
+            isCollection: false
+          })
+          return
+        }
+        this.setData({
+          isCollection: true
         })
         wx.hideNavigationBarLoading()
         wx.stopPullDownRefresh()

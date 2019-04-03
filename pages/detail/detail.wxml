@@ -1,5 +1,14 @@
 <!--pages/detail/detail.wxml-->
 <wxs module="filter" src="./detail.wxs"></wxs>
+<view class='detail-fixed-side'>
+  <view bindtap='collectionClick'>
+    <i-icon type="collection"  size="28" color="#80848f" wx:if="{{!isCollection}}"/>
+    <i-icon type="collection_fill" size="28" color="red" wx:if="{{isCollection}}"/>
+  </view>
+  <view bindtap='addComment'>
+    <i-icon type="brush" size="28" color="#80848f"/>
+  </view>
+</view>
 <view class='top-detial'>
   <view class='detail-head'>
   <view class='user-img-box'>
@@ -18,7 +27,20 @@
   <image src="{{item}}" class="slide-image" mode='aspectFill'/>
   </view>
 </view>
+  <view class='detail-lookdata'>
+  <text class='detail-lookdata__look'>浏览 {{lookAndcollection.lookTimes || 0}}</text>
+  <text>收藏 {{lookAndcollection.collectionTimes || 0}}</text>
+  </view>
 </view>
+
+<view class='detail-user-info'>
+  <view class='detail-user-info__title'>楼主资料</view>
+  <view class='detail-user-info__content'>
+    <view class='info__content__row'>微信：{{proDetail.wx.require ? proDetail.wx.value : '*** (已保密)'}}<text class='info__content__row__copy' bindtap='copyInfo' data-key="{{proDetail.wx.require ? proDetail.wx.value : '*** (已保密)'}}">{{proDetail.wx.require ? '复制' : ''}}</text></view>
+    <view class='info__content__row'>手机：{{proDetail.mobile.require ? proDetail.mobile.value : '*** (已保密)'}}<text class='info__content__row__copy' bindtap='copyInfo' data-key="{{proDetail.mobile.require ? proDetail.mobile.value : '*** (已保密)'}}">{{proDetail.mobile.require ? '复制' : ''}}</text></view>
+  </view>
+</view>
+
 <view class='detail-comment-box'>
   <view class='detail-comment-box__title'>留言{{commentData && commentData.length && commentData.length ? ' · ' +  commentData.length : ''}}</view>
   <view wx:if="{{!commentData.length}}" class="detail-comment-nothing">还没有人留言，快来留言吧~</view>
