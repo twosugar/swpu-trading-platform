@@ -5,13 +5,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    // proDetail: "",
-    proDetail: JSON.parse(`{"_id":"XJEFqZT75u22qvAD","_openid":"o9Q2L5bifFYK9VLGpay - AOwFjy - g","content":"无价风景","imgList":["https://7879-xyz-63b968-1258737955.tcb.qcloud.la/userImg/1553008037132-5087450.jpg"],"mobile":{"require":true,"value":"16772993"},"price":6,"send_time":1553008040385,"title":"学校风景","type":"中国","user_img":"https://wx.qlogo.cn/mmopen/vi_32/Cjf0tRZajBV857YglONyicgCdd2FqqzkRic7cLdMae0siaKES5yCw9nOv8geELD2GlLxowyAOGUt6iaRAHfjblDnRg/132","username":"乞人","wx":{"require":true,"value":"xf9955"}}`),
+    proDetail: "",
+    // proDetail: JSON.parse(`{"_id":"XJEFqZT75u22qvAD","_openid":"o9Q2L5bifFYK9VLGpay - AOwFjy - g","content":"无价风景","imgList":["https://7879-xyz-63b968-1258737955.tcb.qcloud.la/userImg/1553008037132-5087450.jpg"],"mobile":{"require":true,"value":"16772993"},"price":6,"send_time":1553008040385,"title":"学校风景","type":"中国","user_img":"https://wx.qlogo.cn/mmopen/vi_32/Cjf0tRZajBV857YglONyicgCdd2FqqzkRic7cLdMae0siaKES5yCw9nOv8geELD2GlLxowyAOGUt6iaRAHfjblDnRg/132","username":"乞人","wx":{"require":true,"value":"xf9955"}}`),
     commentData: [],
     userInfo: '',
     isClickBtn: false,//是否点击留言
     lookAndcollection: '', //浏览和收藏
-    isCollection: false, //是否收藏
+    isCollection: null, //是否收藏
   },
 
   /**
@@ -20,15 +20,15 @@ Page({
   onLoad: function (options) {
     console.log(options)
     this.isUserLogin()
-    // if (!options.data) {
-    //   return
-    // }
+    if (!options.data) {
+      return
+    }
     this.setData({
-      // proDetail: JSON.parse(options.data),
+      proDetail: JSON.parse(options.data),
     }, () => {
-      this.onGetCommentList(this.data.proDetail._id || 'XJEFqZT75u22qvAD')
-      this.getCollectionData(this.data.proDetail._id || 'XJEFqZT75u22qvAD')
-      this.getUserCollection(this.data.proDetail._id || 'XJEFqZT75u22qvAD')
+      this.onGetCommentList(this.data.proDetail._id)
+      this.getCollectionData(this.data.proDetail._id)
+      this.getUserCollection(this.data.proDetail._id)
     })
     
   },
@@ -95,7 +95,7 @@ Page({
     db.collection('comment').add({
       data: {
         ...params,
-        proId: that.data.proDetail._id || 'XJEFqZT75u22qvAD',
+        proId: that.data.proDetail._id,
         commentReply: []
       },
       success(res) {
@@ -105,7 +105,7 @@ Page({
           icon: 'success',
           duration: 2000
         })
-        that.onGetCommentList(that.data.proDetail._id || 'XJEFqZT75u22qvAD')
+        that.onGetCommentList(that.data.proDetail._id)
       },
       fail(res) {
         console.log(res)
@@ -156,7 +156,53 @@ Page({
   },
 
   collectionClick() { //收藏
-
+    const that = this
+    const db = wx.cloud.database()
+    const id = this.data.isCollection
+    if(this.data.isCollection) {
+      db.collection('userCollection').doc(id).remove({
+        success: res => {
+          console.log('xxxxxxxx')
+          this.setData({
+            isCollection: null
+          })
+          wx.showToast({
+            icon: 'none',
+            title: '已取消收藏'
+          })
+        },
+        fail: err => {
+          console.log(err)
+          wx.showToast({
+            icon: 'none',
+            title: '操作失败'
+          })
+        }
+      })
+    }
+    else {
+      db.collection('userCollection').add({
+        data: {
+          proId: this.data.proDetail._id || 'XJEFqZT75u22qvAD',
+        },
+        success(res) {
+          console.log(res)
+          that.setData({
+            isCollection: res._id
+          })
+          wx.showToast({
+            icon: 'none',
+            title: '收藏成功'
+          })
+        },
+        fail: err => {
+          wx.showToast({
+            icon: 'none',
+            title: '操作失败'
+          })
+        }
+      })
+    }
   },
 
   getCollectionData(id) {//获取浏览量和收藏数
@@ -195,12 +241,13 @@ Page({
         console.log('用户收藏', res)
         if (!res || !res.data || !res.data.length) {
           this.setData({
-            isCollection: false
+            isCollection: null,
+            
           })
           return
         }
         this.setData({
-          isCollection: true
+          isCollection: res.data[0]._id
         })
         wx.hideNavigationBarLoading()
         wx.stopPullDownRefresh()

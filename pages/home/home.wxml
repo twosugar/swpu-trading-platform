@@ -18,7 +18,7 @@
 </i-tabs>
 <view class='container'>
 <!-- <open-data type="userAvatarUrl"></open-data> -->
-  <view wx:for="{{proList}}" wx:key="id" class="home-card" data-item='{{item}}' bindtap='gotoDetail'>
+  <view wx:for="{{allProList}}" wx:key="id" class="home-card" data-item='{{item}}' bindtap='gotoDetail'>
     <view class='card-head'>
       <view class='card-user-imgbox'>
       <image src='{{item.user_img}}' class='card-user-img'></image>

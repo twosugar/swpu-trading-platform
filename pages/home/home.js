@@ -14,7 +14,7 @@ Page({
     proList: [],
     paging: {
       pageSize: 10,
-      currentPage: 1,
+      currentPage: 0,
       total: ''
     }
   },
@@ -76,24 +76,27 @@ Page({
   onGetProList: function () {
     const that = this
     const db = wx.cloud.database()
+    const { paging } = this.data
     // 查询当前用户所有的 counters
-    db.collection('lists').get({
+    console.log('this.data.pageSize * this.data.currentPage', paging.pageSize * paging.currentPage)
+    db.collection('lists')
+      .skip(paging.pageSize * paging.currentPage)
+      .limit(paging.pageSize)
+      .get({
       success: res => {
-        console.log(res)
+        console.log('列表', res)
         if(!res || !res.data || !res.data.length) {
+          wx.showToast({
+            icon: 'none',
+            title: '没有更多了',
+          })
           return
         }
         const { paging } = that.data
         this.setData({
-          allProList: res.data,
-          paging: {
-            pageSize: 10,
-            currentPage: 1,
-            total: res.data.length
-          }
-        }, () => {
-          that.getShowList(paging)
+          allProList: this.data.allProList.concat(res.data),
         })
+        console.log('allProList,ping',this.data)
         wx.hideNavigationBarLoading()
         wx.stopPullDownRefresh()
         console.log('[数据库] [查询记录] 成功: ', res)
@@ -106,14 +109,6 @@ Page({
         console.error('[数据库] [查询记录] 失败：', err)
       }
     })
-  },
-
-  getShowList(paging) {
-   const { allProList } = this.data
-   const proList = allProList.slice(0, paging.currentPage * paging.pageSize)
-   this.setData({
-     proList
-   })
   },
 
   handleEvent(e) {
@@ -166,17 +161,11 @@ Page({
    */
   onReachBottom: function () {
     const { paging } = this.data
-    if (paging.currentPage * paging.pageSize >= paging.total) {
-      wx.showToast({
-        icon: 'none',
-        title: '已全部加载完毕',
-      })
-      return
-    }
-    paging.currentPage = paging.currentPage + 1
-    this.getShowList(paging)
+    paging.currentPage ++
     this.setData({
       paging
+    }, () => {
+      this.onGetProList()
     })
   },
 
