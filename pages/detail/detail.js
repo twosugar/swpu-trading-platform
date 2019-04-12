@@ -29,6 +29,7 @@ Page({
       this.onGetCommentList(this.data.proDetail._id)
       this.getCollectionData(this.data.proDetail._id)
       this.getUserCollection(this.data.proDetail._id)
+      this.addLookCount(this.data.proDetail._id)
     })
     
   },
@@ -70,6 +71,42 @@ Page({
     })
   },
 
+  addLookCount(id) {
+    if(!id) {
+      return
+    }
+    const that = this
+    const db = wx.cloud.database()
+    db.collection('lists').doc(id).update({
+      data: {
+        'lookTimes': that.data.proDetail && that.data.proDetail.lookTimes + 1,
+      },
+      success: res => {
+        console.log(res)
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
+  },
+
+  addCollonCount() {
+    const { isCollection } = this.data
+    const that = this
+    const db = wx.cloud.database()
+    db.collection('lists').doc(that.data.proDetail._id).update({
+      data: {
+        'collectionTimes': isCollection ? (that.data.proDetail.collectionTimes + 1) <= 0 ? 0 : that.data.proDetail.collectionTimes + 1 : (that.data.proDetail.collectionTimes - 1) <= 0 ? 0 : that.data.proDetail.collectionTimes - 1,
+      },
+      success: res => {
+        console.log(res)
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
+  },
+
   inputChange(e) {
     this.setData({
       inputValue: e.detail.value
@@ -84,12 +121,12 @@ Page({
     const _ = db.command
     const nowTime = new Date().getTime()
     const params = {
-      commentContent: inputValue || '',
-      commentId: parseInt(Math.random() * 10000000000) || '',
-      commentTime: nowTime || '',
-      identity: '楼主',
-      userName: userInfo.nickName || '',
-      img: userInfo.avatarUrl || ''
+      'commentContent': inputValue || '',
+      'commentId': parseInt(Math.random() * 10000000000) || '',
+      'commentTime': nowTime || '',
+      'identity': '楼主',
+      'userName': userInfo.nickName || '',
+      'img': userInfo.avatarUrl || ''
     }
     console.log('params', params)
     db.collection('comment').add({
@@ -162,10 +199,10 @@ Page({
     if(this.data.isCollection) {
       db.collection('userCollection').doc(id).remove({
         success: res => {
-          console.log('xxxxxxxx')
+          console.log('xxxxxxxxid', id)
           this.setData({
             isCollection: null
-          })
+          }, () => that.addCollonCount())
           wx.showToast({
             icon: 'none',
             title: '已取消收藏'
@@ -183,13 +220,13 @@ Page({
     else {
       db.collection('userCollection').add({
         data: {
-          proId: this.data.proDetail._id || 'XJEFqZT75u22qvAD',
+          proId: this.data.proDetail._id,
         },
         success(res) {
           console.log(res)
           that.setData({
             isCollection: res._id
-          })
+          }, () => that.addCollonCount())
           wx.showToast({
             icon: 'none',
             title: '收藏成功'
@@ -231,7 +268,7 @@ Page({
     })
   },
 
-  getUserCollection(id) {//获取浏览量和收藏数
+  getUserCollection(id) {
     const that = this
     const db = wx.cloud.database()
     db.collection('userCollection').where({

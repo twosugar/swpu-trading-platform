@@ -196,21 +196,23 @@ Page({
     db.collection('lists').add({
       // data 字段表示需新增的 JSON 数据
       data: {
-        title: formData['title'],
-        content: formData['content'],
-        imgList: filePaths,
-        type: formData['type'],
-        username: userInfo['nickName'],
-        user_img: userInfo['avatarUrl'],
-        send_time: new Date().getTime(),
-        price: formData['price'],
-        mobile: {
-          value: formData['mobile'],
-          require: switchData.switchMobile
+        'title': formData['title'],
+        'content': formData['content'],
+        'imgList': filePaths,
+        'type': formData['type'],
+        'username': userInfo['nickName'],
+        'user_img': userInfo['avatarUrl'],
+        'send_time': new Date().getTime(),
+        'price': formData['price'],
+        'collectionTimes': 0, //收藏数
+        'lookTimes': 0,//浏览数
+        'mobile': {
+          'value': formData['mobile'],
+          'require': switchData.switchMobile
         },
-        wx: {
-          value: formData['wx'],
-          require: switchData.switchWx
+        'wx': {
+          'value': formData['wx'],
+          'require': switchData.switchWx
         }
       }
     })

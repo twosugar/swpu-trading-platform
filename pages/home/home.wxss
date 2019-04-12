@@ -90,3 +90,8 @@ page {
   color: #999999;
   font-size: 26rpx;
 }
+.home-card-look {
+  margin-top: 10px;
+  display: inline-block;
+  margin-right: 10px;
+}

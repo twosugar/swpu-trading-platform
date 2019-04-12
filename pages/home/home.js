@@ -152,7 +152,16 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.onLoad()
+    
+    this.setData({
+      paging: {
+        pageSize: 10,
+        currentPage: 0,
+        total: ''
+      },
+      allProList: []
+    }, () => { this.onGetProList() })
+
     wx.showNavigationBarLoading() //在标题栏中显示加载
   },
 

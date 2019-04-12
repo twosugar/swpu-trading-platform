@@ -40,6 +40,8 @@
       <view>#{{item.type}}</view>
       <view>{{filter.timeChange(item.send_time)}}</view>
     </view>
+    <view class='home-card-look'><i-icon type="browse" size="18" color="#80848f"/>{{item.lookTimes}}</view>
+    <view class='home-card-look'><i-icon type="collection" size="18" color="#80848f"/>{{item.collectionTimes}}</view>
   </view>
 </view>
 </view>

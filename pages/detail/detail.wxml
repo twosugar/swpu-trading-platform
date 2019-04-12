@@ -28,8 +28,8 @@
   </view>
 </view>
   <view class='detail-lookdata'>
-  <text class='detail-lookdata__look'>浏览 {{lookAndcollection.lookTimes || 0}}</text>
-  <text>收藏 {{lookAndcollection.collectionTimes || 0}}</text>
+  <text class='detail-lookdata__look'>浏览 {{proDetail.lookTimes || 0}}</text>
+  <text>收藏 {{proDetail.collectionTimes || 0}}</text>
   </view>
 </view>
 
