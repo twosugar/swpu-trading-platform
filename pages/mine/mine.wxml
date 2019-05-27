@@ -1,0 +1,19 @@
+<!--pages/mine/mine.wxml-->
+<view class='person-info'>
+  <view class='header'>
+    <view class='head-portrait'>
+      <open-data type="userAvatarUrl" ></open-data>
+    </view>
+    <open-data type="userNickName" class='img-title' ></open-data>
+  </view>
+  <view class="lists">
+    <view class="lists-item" wx:for="{{listData}}" bindtap='listTap' wx:key="{{index}}" data-path="{{item.path}}">
+      <view class='lists-item-title'>
+        <i-icon type="{{item.icon}}" size='24' />
+        <text>{{item.name}}</text>
+      </view>
+      <i-icon type="return" class='right-icon' />
+    </view>
+  </view>
+  
+</view>

@@ -1,9 +1,11 @@
 {
   "pages": [
-
+    "pages/collection/collection",
+    "pages/mine/mine",
     "pages/home/home",
     "pages/detail/detail",
     "pages/sendPage/sendPage",
+    
     "pages/firstPage/firstPage",
     "pages/index/index",
     "pages/userConsole/userConsole",
@@ -39,7 +41,7 @@
         "text": "发布"
       },
       {
-        "pagePath": "pages/home/home",
+        "pagePath": "pages/mine/mine",
         "selectedIconPath": "images/mine_active.png",
         "iconPath": "images/mine.png",
         "text": "我的"

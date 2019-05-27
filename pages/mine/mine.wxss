@@ -1,0 +1,60 @@
+/* pages/mine/mine.wxss */
+page {
+  height: 100%;
+  background: #f7f7f7;
+}
+
+.header {
+  background-image: linear-gradient( 135deg, #FFF6B7 10%, #F6416C 100%);
+  height: 300rpx;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.head-portrait {
+  height: 130rpx;
+  width: 130rpx;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.head-portrait-img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 100%;
+}
+
+.img-title {
+  text-align: center;
+}
+
+.lists {
+  margin-top: 10rpx;
+  box-sizing: border-box;
+  padding: 20rpx
+}
+
+.lists-item {
+  height: 100rpx;
+  margin-top: 20rpx;
+  /* background: red; */
+  box-sizing: border-box;
+  padding: 0 10rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 2rpx;
+  box-shadow:0rpx 0rpx 10rpx 0rpx #DEDEDE;
+}
+
+.lists-item-title {
+  display: flex;
+  align-items: center;
+}
+
+.right-icon {
+  transform: rotateZ(180deg)
+}

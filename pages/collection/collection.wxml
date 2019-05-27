@@ -1,0 +1,6 @@
+<!--pages/collection/collection.wxml-->
+<view class='collection-page'>
+  <view wx:for="{{collectList}}" wx:key="{{index}}">
+    {{item.title}}
+  </view>
+</view>

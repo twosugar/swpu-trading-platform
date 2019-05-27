@@ -6,7 +6,6 @@ Page({
    */
   data: {
     proDetail: "",
-    // proDetail: JSON.parse(`{"_id":"XJEFqZT75u22qvAD","_openid":"o9Q2L5bifFYK9VLGpay - AOwFjy - g","content":"无价风景","imgList":["https://7879-xyz-63b968-1258737955.tcb.qcloud.la/userImg/1553008037132-5087450.jpg"],"mobile":{"require":true,"value":"16772993"},"price":6,"send_time":1553008040385,"title":"学校风景","type":"中国","user_img":"https://wx.qlogo.cn/mmopen/vi_32/Cjf0tRZajBV857YglONyicgCdd2FqqzkRic7cLdMae0siaKES5yCw9nOv8geELD2GlLxowyAOGUt6iaRAHfjblDnRg/132","username":"乞人","wx":{"require":true,"value":"xf9955"}}`),
     commentData: [],
     userInfo: '',
     isClickBtn: false,//是否点击留言
