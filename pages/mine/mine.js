@@ -7,8 +7,8 @@ Page({
   data: {
     userInfo: '',
     listData: [
-      { name: '我的收藏', icon: 'collection', path: 'pages/collection/collection'},
-      {name: '我的发布', icon: 'share', path: '' },
+      { name: '我的收藏', icon: 'collection', path: 'pages/collection/collection', color: '#FF8040'},
+      { name: '我的发布', icon: 'share', path: 'pages/collection/collection', color: '#4F9D9D' },
     ]
   },
 
@@ -48,10 +48,9 @@ Page({
     if (!e || !e.target.dataset || !e.target.dataset.path) {
       return
     }
-    const path = e.target.dataset.path
-    console.log(path)
+    const {path, name} = e.target.dataset;
     wx.navigateTo({
-      url: `../../${path}`
+      url: `../../${path}?name=${name}`
     })
   },
 

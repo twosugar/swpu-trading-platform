@@ -12,7 +12,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getPersonCollectList()
+    console.log()
+    if (options.name === 'collection') {
+      this.getPersonCollectList();
+    } else if (options.name === 'share') {
+      this.getPersonSendList();
+    }
+    
   },
 
   getPersonCollectList: function () {
@@ -35,14 +41,36 @@ Page({
     })
   },
 
+  getPersonSendList: function () {
+    const that = this
+    const db = wx.cloud.database()
+    const _ = db.command
+    db.collection('counters').where({
+      _openid: "o9Q2L5bifFYK9VLGpay-AOwFjy-g"
+      // proId: _.in(["XJEI7N7E7L4w0-d7", "XH6c1FsqTi00toqZ"])
+    }).get({
+      success(res) {
+        console.log('resresres', res)
+        if (!res || !res.data || !Array.isArray(res.data) || !res.data.length) {
+          return
+        }
+        const collectList = res.data.map(item => {
+          return item._openid
+        })
+        that.getProList(collectList)
+      }
+    })
+  },
+
   getProList: function (data) {
     const that = this
     const db = wx.cloud.database()
     const _ = db.command
     db.collection('lists').where({
-      _id: _.in(data)
+      _openid: _.in(data)
     }).get({
       success(res) {
+        console.log(222222,res)
         if (!res || !res.data || !Array.isArray(res.data) || !res.data.length) {
           return
         }
@@ -51,6 +79,15 @@ Page({
           collectList: res.data
         })
       }
+    })
+  },
+
+  gotoDetail(e) {
+    console.log(e.currentTarget)
+    // return
+    const data = JSON.stringify(e.currentTarget.dataset.item)
+    wx.navigateTo({
+      url: `../detail/detail?data=${data}`,
     })
   },
 

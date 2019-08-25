@@ -1,6 +1,14 @@
 <!--pages/collection/collection.wxml-->
 <view class='collection-page'>
-  <view wx:for="{{collectList}}" wx:key="{{index}}">
-    {{item.title}}
+  <view wx:for="{{collectList}}" wx:key="{{index}}" class="collect-item" data-item='{{item}}' bindtap='gotoDetail'>
+   <view class="card-head">
+    <view class='card-user-imgbox'>
+      <image src='{{item.user_img}}' class='card-user-img'></image>
+    </view>
+    <view class="card-title">{{item.title}}</view>
+   </view>
+   <view class="card-container">
+    <image mode="aspectFill"d src='{{item.imgList && item.imgList.length && item.imgList[0]}}' lazy-load="{{true}}" class='card-container-img'></image>
+   </view>
   </view>
 </view>

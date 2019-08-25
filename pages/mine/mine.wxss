@@ -46,7 +46,7 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: 2rpx;
+  border-radius: 10rpx;
   box-shadow:0rpx 0rpx 10rpx 0rpx #DEDEDE;
 }
 
