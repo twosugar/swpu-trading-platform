@@ -36,7 +36,7 @@ Page({
         const collectList = res.data.map(item => {
           return item.proId
         })
-        that.getProList(collectList)
+        that.getProList(collectList, "collect")
       }
     })
   },
@@ -57,17 +57,23 @@ Page({
         const collectList = res.data.map(item => {
           return item._openid
         })
-        that.getProList(collectList)
+        that.getProList(collectList, 'send')
       }
     })
   },
 
-  getProList: function (data) {
+  getProList: function (data, key) {
     const that = this
     const db = wx.cloud.database()
     const _ = db.command
+    let param = '_id';
+    if (key === 'collect') {
+      param = '_id'
+    } else if (key === 'send') {
+      param = '_openid'
+    }
     db.collection('lists').where({
-      _openid: _.in(data)
+      [param]: _.in(data)
     }).get({
       success(res) {
         console.log(222222,res)
